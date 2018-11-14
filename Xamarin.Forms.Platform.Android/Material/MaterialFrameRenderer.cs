@@ -1,3 +1,4 @@
+#if __ANDROID90__
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ using Android.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android.FastRenderers;
 using Xamarin.Forms.Platform.Android.Material;
+using MaterialCardView = Android.Support.Design.Card.MaterialCardView;
 using AColor = Android.Graphics.Color;
 using AView = Android.Views.View;
-using MaterialCardView = Android.Support.Design.Card.MaterialCardView;
 
 // this won't go here permanently it's just for testing at this point
 [assembly: ExportRenderer(typeof(Xamarin.Forms.Frame), typeof(MaterialFrameRenderer), new[] { typeof(Visual.MaterialVisual) })]
@@ -302,3 +303,4 @@ namespace Xamarin.Forms.Platform.Android.Material
 		}
 	}
 }
+#endif

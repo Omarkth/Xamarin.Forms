@@ -17,7 +17,8 @@
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <AndroidTargetFrameworkVersion Condition="$(AndroidTargetFrameworkVersion) == ''">v9.0</AndroidTargetFrameworkVersion>
+    <TargetFrameworkVersion>$(AndroidTargetFrameworkVersion)</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <PackageId>Xamarin.Forms.Platform.AndroidForwarders</PackageId>
@@ -69,12 +70,20 @@
       <Name>Xamarin.Forms.Platform.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFrameworkVersion)' == 'v9.0' ">
     <PackageReference Include="Xamarin.Android.Support.v4">
       <Version>28.0.0-preview7</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.RecyclerView">
       <Version>28.0.0-preview7</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFrameworkVersion)' == 'v8.1' ">
+    <PackageReference Include="Xamarin.Android.Support.v4">
+      <Version>27.0.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.v7.RecyclerView">
+      <Version>27.0.2.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

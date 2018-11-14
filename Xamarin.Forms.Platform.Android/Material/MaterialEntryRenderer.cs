@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+#if __ANDROID90__
+using System;
 using System.ComponentModel;
 using Android.Content;
 using Android.Graphics;
@@ -572,3 +574,4 @@ namespace Xamarin.Forms.Platform.Android.Material
 		//}
 	}
 }
+#endif

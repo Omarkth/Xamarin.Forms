@@ -1,3 +1,5 @@
+#if __ANDROID90__
+
 using System;
 using Android.Content;
 using Android.Graphics;
@@ -53,3 +55,4 @@ namespace Xamarin.Forms.Platform.Android.Material
 		internal event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 	}
 }
+#endif

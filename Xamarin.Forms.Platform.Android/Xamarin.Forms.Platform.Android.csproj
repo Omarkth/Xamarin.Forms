@@ -14,7 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <AndroidTargetFrameworkVersion Condition="$(AndroidTargetFrameworkVersion) == ''">v9.0</AndroidTargetFrameworkVersion>
+    <TargetFrameworkVersion>$(AndroidTargetFrameworkVersion)</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>
@@ -42,6 +43,12 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>CS0109</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v8.1' ">
+    <DefineConstants>$(DefineConstants);__ANDROID81__</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' == 'v9.0' ">
+    <DefineConstants>$(DefineConstants);__ANDROID90__</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -258,7 +265,7 @@
       <Name>Xamarin.Forms.Platform.Android.FormsViewGroup</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFrameworkVersion)' == 'v9.0' ">
     <PackageReference Include="Xamarin.Android.Support.Design">
       <Version>28.0.0-preview7</Version>
     </PackageReference>
@@ -267,6 +274,17 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.CardView">
       <Version>28.0.0-preview7</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFrameworkVersion)' == 'v8.1' ">
+    <PackageReference Include="Xamarin.Android.Support.Design">
+      <Version>27.0.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.v4">
+      <Version>27.0.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.v7.CardView">
+      <Version>27.0.2.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
