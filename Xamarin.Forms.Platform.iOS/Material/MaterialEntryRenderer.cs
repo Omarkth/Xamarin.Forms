@@ -334,10 +334,16 @@ namespace Xamarin.Forms.Platform.iOS.Material
 				iosColor = color.ToUIColor();
 			}
 
+			_activeTextinputController.NormalColor = iosColor;
+			_activeTextinputController.ActiveColor = iosColor;
+
+			//Control.Underline.Color = iosColor;
 			_activeTextinputController.InlinePlaceholderColor = iosColor;
 			_activeTextinputController.FloatingPlaceholderActiveColor = iosColor;
 			_activeTextinputController.FloatingPlaceholderNormalColor = iosColor;
 			_activeTextinputController.PlaceholderText = placeholderText;
+			_activeTextinputController.UnderlineViewMode = UITextFieldViewMode.Always;
+
 		}
 
 		void UpdateText()
