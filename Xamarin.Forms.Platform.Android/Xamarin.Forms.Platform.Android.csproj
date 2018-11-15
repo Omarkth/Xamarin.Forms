@@ -290,4 +290,32 @@
     </PackageReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+
+  <ItemGroup>
+    <ProjectToBuild Include="../Stubs/Xamarin.Forms.Platform.Android/Xamarin.Forms.Platform.Android (Forwarders).csproj">
+      <Properties>CreateAllAndroidTargets=false;Configuration=$(Configuration);Platform=$(Platform);AndroidTargetFrameworkVersion=v8.1</Properties>
+    </ProjectToBuild>    
+    <ProjectToBuild Include="Xamarin.Forms.Platform.Android.csproj">
+      <Properties>CreateAllAndroidTargets=false;Configuration=$(Configuration);Platform=$(Platform);AndroidTargetFrameworkVersion=v8.1</Properties>
+    </ProjectToBuild>    
+  </ItemGroup>
+
+
+  <Target Name="BeforeBuild"  Condition=" '$(CreateAllAndroidTargets)' == 'true' ">
+  <!--  create 8.1 binaries-->
+    <MSBuild Targets="Restore" Projects="@(ProjectToBuild)" >
+    </MSBuild>
+    <MSBuild Projects="@(ProjectToBuild)" >
+    </MSBuild>
+
+<!-- restore 9.0 binaries-->
+    <MSBuild Targets="Restore" 
+             Projects="../Stubs/Xamarin.Forms.Platform.Android/Xamarin.Forms.Platform.Android (Forwarders).csproj" 
+             Properties="CreateAllAndroidTargets=false;Configuration=$(Configuration);Platform=$(Platform);">
+    </MSBuild>
+    <MSBuild Targets="Restore" 
+             Projects="Xamarin.Forms.Platform.Android.csproj"
+             Properties="CreateAllAndroidTargets=false;Configuration=$(Configuration);Platform=$(Platform);">
+    </MSBuild>
+  </Target>
 </Project>
