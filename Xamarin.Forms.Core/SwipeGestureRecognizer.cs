@@ -52,44 +52,45 @@ namespace Xamarin.Forms
 
 		bool ISwipeGestureController.DetectSwipe(View sender, SwipeDirection direction)
 		{
-			var detected = false;
+			SwipeDirection? detected = null;
 			var threshold = Threshold;
 
-			if (direction.IsLeft())
+			if (direction.IsLeft() && _totalX < -threshold)
 			{
-				detected |= _totalX < -threshold;
+				detected = SwipeDirection.Left;
 			}
 
-			if (direction.IsRight())
+			if (direction.IsRight() && _totalX > threshold)
 			{
-				detected |= _totalX > threshold;
+				detected = SwipeDirection.Right;
 			}
 
-			if (direction.IsDown())
+			if (direction.IsDown() && _totalY > threshold)
 			{
-				detected |= _totalY > threshold;
+				detected = SwipeDirection.Down;
 			}
 
-			if (direction.IsUp())
+			if (direction.IsUp() && _totalY < -threshold)
 			{
-				detected |= _totalY < -threshold;
+				detected = SwipeDirection.Up;
 			}
 
-			if (detected)
+			var wasDetected = detected.HasValue;
+			if (wasDetected)
 			{
-				SendSwiped(sender, direction);
+				SendSwiped(sender, direction, detected.Value);
 			}
 
-			return detected;
+			return wasDetected;
 		}
 
-		public void SendSwiped(View sender, SwipeDirection direction)
+		public void SendSwiped(View sender, SwipeDirection direction, SwipeDirection detectedDirection)
 		{
 			ICommand cmd = Command;
 			if (cmd != null && cmd.CanExecute(CommandParameter))
 				cmd.Execute(CommandParameter);
 
-			Swiped?.Invoke(sender, new SwipedEventArgs(CommandParameter, direction));
+			Swiped?.Invoke(sender, new SwipedEventArgs(CommandParameter, direction, detectedDirection));
 		}
 	}
 

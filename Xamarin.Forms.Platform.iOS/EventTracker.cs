@@ -240,14 +240,14 @@ namespace Xamarin.Forms.Platform.MacOS
 			var swipeRecognizer = recognizer as SwipeGestureRecognizer;
 			if (swipeRecognizer != null)
 			{
-				var returnAction = new Action<SwipeDirection>((direction) =>
+				var returnAction = new Action<(SwipeDirection, SwipeDirection)>((direction, detectedDirection) =>
 				{
 					var swipeGestureRecognizer = weakRecognizer.Target as SwipeGestureRecognizer;
 					var eventTracker = weakEventTracker.Target as EventTracker;
 					var view = eventTracker?._renderer.Element as View;
 
 					if (swipeGestureRecognizer != null && view != null)
-						swipeGestureRecognizer.SendSwiped(view, direction);
+						swipeGestureRecognizer.SendSwiped(view, direction, detectedDirection);
 				});
 				var uiRecognizer = CreateSwipeRecognizer(swipeRecognizer.Direction, returnAction, 1);
 				return uiRecognizer;
@@ -418,13 +418,13 @@ namespace Xamarin.Forms.Platform.MacOS
 			return result;
 		}
 
-		UISwipeGestureRecognizer CreateSwipeRecognizer(SwipeDirection direction, Action<SwipeDirection> action, int numFingers = 1)
+		UISwipeGestureRecognizer CreateSwipeRecognizer(SwipeDirection direction, Action<(SwipeDirection, SwipeDirection)> action, int numFingers = 1)
 		{
 			var result = new UISwipeGestureRecognizer();
 			result.NumberOfTouchesRequired = (uint)numFingers;
 			result.Direction = (UISwipeGestureRecognizerDirection)direction;
 			result.ShouldRecognizeSimultaneously = (g, o) => true;
-			result.AddTarget(() => action(direction));
+			result.AddTarget(() => action((direction, direction)));
 			return result;
 		}
 
