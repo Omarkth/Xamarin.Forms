@@ -52,33 +52,33 @@ namespace Xamarin.Forms
 
 		bool ISwipeGestureController.DetectSwipe(View sender, SwipeDirection direction)
 		{
-			SwipeDirection? detected = null;
+			SwipeDirection detected = 0;
 			var threshold = Threshold;
 
 			if (direction.IsLeft() && _totalX < -threshold)
 			{
-				detected = SwipeDirection.Left;
+				detected |= SwipeDirection.Left;
 			}
 
 			if (direction.IsRight() && _totalX > threshold)
 			{
-				detected = SwipeDirection.Right;
+				detected |= SwipeDirection.Right;
 			}
 
 			if (direction.IsDown() && _totalY > threshold)
 			{
-				detected = SwipeDirection.Down;
+				detected |= SwipeDirection.Down;
 			}
 
 			if (direction.IsUp() && _totalY < -threshold)
 			{
-				detected = SwipeDirection.Up;
+				detected |= SwipeDirection.Up;
 			}
 
-			var wasDetected = detected.HasValue;
+			var wasDetected = detected > 0;
 			if (wasDetected)
 			{
-				SendSwiped(sender, direction, detected.Value);
+				SendSwiped(sender, direction, detected);
 			}
 
 			return wasDetected;
